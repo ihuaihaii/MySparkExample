@@ -4,16 +4,15 @@ import org.apache.spark.sql.SparkSession
 object CoreTest {
   def main(args:Array[String]): Unit ={
     val spark=SparkSession.builder().master("local").appName("coreTest").getOrCreate()
-//    spark.conf.set("spark.executor.memory","2g")
+//  spark.conf.set("spark.executor.memory","2g")
     //spark.conf.getAll.foreach(println)
     import spark.implicits._
     val test=spark.range(5,100,5)
     //test.orderBy("id")
     //D:\data\graphx-wiki-edges.txt
     //D:\data\graphx-wiki-vertices.txt
-    val vertices=spark.read.text("file:///D:\\data\\graphx-wiki-vertices.txt")
-//    val vertices2=spark.read.csv("file:///D:\\data\\graphx-wiki-vertices.txt")
-    val edges=spark.read.textFile("file:///D:\\data\\graphx-wiki-edges.txt")
+    val vertices=spark.read.text("file:///data/graphx-wiki-vertices.txt")
+    val edges=spark.read.textFile("file:///data/graphx-wiki-edges.txt")
 
 //    import spark.implicits._
 //    val vertices2=vertices.map(e=>(e.toString().split('\t')(0),e.toString().split('\t')(1)))
@@ -32,5 +31,4 @@ object CoreTest {
 //    edges.collect().take(100).foreach(println)
 //    vertices.collect().take(100).foreach(println)
   }
-
 }
