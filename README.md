@@ -1,7 +1,8 @@
 # Spark2 API开发示例
 
 #内容列表
-#数据：
+
+#0.数据：
 
     data/graphx-wiki-vertices.txt 
     分隔符 \t,  列名称：id，name
