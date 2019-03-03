@@ -1,38 +1,88 @@
-import breeze.linalg.split
+
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
+
 
 object DFAndDS {
+  def DSuc(sks:SparkSession): Unit ={
+  }
+
+  def DFuc(sks:SparkSession): Unit ={
+    var txtFile=sks.read.text("file:///D:\\project\\MySparkExample\\data\\1.txt")
+
+    //数据展示
+ /*   txtFile.first()   //获取第一条数据
+    txtFile.head(10)  //获取前10条数据  first和head功能相同
+    txtFile.show(100,false)
+
+    txtFile.take(10)   //获取前10条记录。take和takeAsList方法会将获得到的数据返回到Driver端
+    txtFile.takeAsList(10) //获取前10条记录并以List形式。take和takeAsList方法会将获得到的数据返回到Driver端，以免Driver发生OutOfMemoryError
+
+    txtFile.limit(3).show()    //limit方法获取指定DataFrame的前n行记录 limit方法不是Action操作
+*/
+//    txtFile.select(txtFile("*")).show(false) //选取指定字段展示
+
+    import sks.implicits
+
+    txtFile.withColumn("values",split(col("value"), "\t")).select(
+//      col("value").,
+      col("values").getItem(0).as("id")
+    ).show(false)
+
+    txtFile.withColumn("date1",date_format(current_date(),"yyyyMMdd")).show(false)
+    txtFile.select(txtFile.col("value"),txtFile("value")).show(false)
+
+//    val separator = ","
+//    txtFile.map(_.toSeq.foldLeft("")
+
+//    txtFile.withColumn("id",split(txtFile("value"),"\t"))
+//    txtFile.withColumn("id",txtFile("value"))
+//      .select(txtFile("id").getItem(0).as("id2")).show(false)
+
+/*
+    txtFile.select(txtFile( "value" ), txtFile( "value").as("bbb") ).show( false) //而是传入Column类型参数
+    txtFile.selectExpr(split("value","\t"))
+    txtFile.selectExpr("value","value.split('\t')").show   //可以对指定字段进行特殊处理
+
+    txtFile.withColumn("value",split(txtFile("value"), ",")).show()
+
+*/
+
+
+
+    //数据过滤
+/*
+    txtFile.where("value like '%a%'").show()   //传入筛选条件表达式，可以用and和or
+    txtFile.filter("value like '%a%'" ).show()  //传入筛选条件表达式,和where使用条件相同
+*/
+
+    //SQL语句操作
+
+/*    txtFile.createTempView("aaaaa")
+    val txtFile2=sks.sql("select split(value,'\t')[0] as id,split(value,'\t')[1] as name from aaaaa")
+    txtFile2.show(false)*/
+
+    //统计类
+/*
+    txtFile.describe("value") //用于统计数值类型字段的统计值，比如count, mean, stddev, min, max等。
+
+    */
+
+
+  }
+
+
   def main(args:Array[String]): Unit ={
 
     val sks=SparkSession.builder().master("local").appName("DFAndDS").getOrCreate()
-    //val txtFile=sks.read.text("file:///D:\\project\\MySparkExample\\data\\graphx-wiki-vertices.txt")
-    val txtFile=sks.read.text("file:///D:\\project\\MySparkExample\\data\\1.txt")
-
-    //txtFile.describe("value") //用于统计数值类型字段的统计值，比如count, mean, stddev, min, max等。
-
-//    txtFile.first()   //获取第一条数据
-//    txtFile.head(10)  //获取前10条数据  first和head功能相同
-//
-//    txtFile.show(100,false)
-//
-//    txtFile.take(10)   //获取前10条记录。take和takeAsList方法会将获得到的数据返回到Driver端
-//    txtFile.takeAsList(10) //获取前10条记录并以List形式。take和takeAsList方法会将获得到的数据返回到Driver端，以免Driver发生OutOfMemoryError
-//
-//    txtFile.where("value like '%a%'").show()   //传入筛选条件表达式，可以用and和or
-//    txtFile.filter("value like '%a%'" ).show()  //传入筛选条件表达式,和where使用条件相同
-
-//    txtFile.select("value").show() //获取指定字段值
-//
-//    txtFile.select(txtFile( "value" ), txtFile( "value").as("bbb") ).show( false) //而是传入Column类型参数
-//      txtFile.selectExpr(split("value","\t"))
-//      txtFile.withColumn("value",split(txtFile("value"), ",")).show()
-
-      txtFile.createTempView("aaaaa")
-      val txtFile2=sks.sql("select split(value,'\t')[0] as id,split(value,'\t')[1] as name from aaaaa")
-      txtFile2.show(false)
 
 
-    //      txtFile.selectExpr("value","value.split('\t')").show   //可以对指定字段进行特殊处理
+
+    DFuc(sks)
+
+
+
+    //
 //    txtFile.col("value")   //获取指定字段,返回对象为Column类型
 //    txtFile.limit(3).show()    //limit方法获取指定DataFrame的前n行记录 limit方法不是Action操作
 //
@@ -88,8 +138,7 @@ object DFAndDS {
     // 在jdbcDF中字段c1的内容为"a, b, a, c, d, b"。其中a和b出现的频率为4 / 6，大于0.3
     //jdbcDF.stat.freqItems(Seq ("c1") , 0.3).show()
 
+
 //    txtFile.stat.freqItems(Seq ("value") , 0.3).show()
-
-
   }
 }
