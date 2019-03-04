@@ -108,16 +108,13 @@ object DFAndDS {
   def DFT_Union(sks:SparkSession): Unit ={
     //读取TxT数据
     var txtFile=sks.read.text("file:///D:\\project\\MySparkExample\\data\\1.txt")
-
     txtFile.union(txtFile.limit(1))  //unionAll方法：对两个DataFrame进行组合
-
 
   }
 
   def DFT_With(sks:SparkSession): Unit ={
     //读取TxT数据
     var txtFile=sks.read.text("file:///D:\\project\\MySparkExample\\data\\1.txt")
-
 
     txtFile
       .withColumn("values",split(col("value"), "\t"))
@@ -135,6 +132,7 @@ object DFAndDS {
   }
 
   def DFT_Order(sks:SparkSession): Unit ={
+
     var txtFile=sks.read.text("file:///D:\\project\\MySparkExample\\data\\1.txt")
     txtFile.orderBy(txtFile("value").desc).show(false)  //按指定字段排序，默认为升序
     txtFile.orderBy(- txtFile("c4")).show(false)    //加个-表示降序排序 sort和orderBy使用方法相同
@@ -154,7 +152,6 @@ object DFAndDS {
 
     txtFile.intersect(txtFile.limit(1)).show(false)  //intersect方法可以计算出两个DataFrame中相同的记录
     txtFile.except(txtFile.limit(1)).show(false)     //获取一个DataFrame中有另一个DataFrame中没有的记录
-
 
   }
 
