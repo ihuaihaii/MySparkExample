@@ -168,8 +168,6 @@ object DFAndDS {
     txtFile.takeAsList(10) //获取前10条记录并以List形式。take和takeAsList方法会将获得到的数据返回到Driver端，以免Driver发生OutOfMemoryError
     txtFile.limit(3).show()    //limit方法获取指定DataFrame的前n行记录 limit方法不是Action操作
 
-
-
   }
 
   def DFA_Stat(sks:SparkSession): Unit ={
