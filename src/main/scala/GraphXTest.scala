@@ -1,4 +1,4 @@
-import org.apache.spark.graphx.{Edge, Graph, VertexId}
+import org.apache.spark.graphx.{Edge, Graph, VertexId, VertexRDD}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
@@ -47,6 +47,9 @@ object GraphXTest {
   }
 
 
+  def vertciesTools(vertices:VertexRDD[(String,String)]): Unit ={
+
+  }
   def main(args:Array[String]): Unit ={
     val sks=SparkSession.builder()
       .master("local")
@@ -54,6 +57,9 @@ object GraphXTest {
       .getOrCreate()
 
     val graph=getGrahp(sks)
+
+    val vertices=graph.vertices
+    vertciesTools(vertices)
 
     //graph.vertices.collect().foreach(println)
 
