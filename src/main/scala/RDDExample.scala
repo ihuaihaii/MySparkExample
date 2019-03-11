@@ -12,10 +12,11 @@ object RDDExample {
 
     //对集合中每个元素进行操作。
     //数据集中的每个元素经过用户自定义的函数转换形成一个新的RDD，新的RDD叫MappedRDD
-    rdd1.map(line=>line+100).collect().foreach(println)
+    rdd1.map(line=>(line+100,line)).map(line=>line._1+line._2).collect().foreach(println)
+    rdd1.map(line=>(line+100,line)).map{case(a,b)=>a+b}.collect().foreach(println)
 
+//    rdd
     sc.stop()
-
   }
 
   def RDDT_FlatMap(sc:SparkContext): Unit ={

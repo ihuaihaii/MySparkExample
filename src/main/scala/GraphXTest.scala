@@ -1,10 +1,11 @@
-import org.apache.spark.graphx.{Edge, Graph}
+import org.apache.spark.graphx.{Edge, Graph, VertexId}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
 object GraphXTest {
 
   def getGrahp(sks:SparkSession): Graph[(String,String),Int] ={
+
     var vertexArray=Array(
       (1L,("a","a")),
       (2L,("a","a")),
@@ -36,7 +37,7 @@ object GraphXTest {
       Edge(5L,1L,10)
     )
 
-    val vertexRDD:RDD[(Long,(String,String))]=sks.sparkContext.parallelize(vertexArray)
+    val vertexRDD:RDD[(VertexId,(String,String))]=sks.sparkContext.parallelize(vertexArray)
     val edgeRDD:RDD[Edge[Int]]=sks.sparkContext.parallelize(edgeArray)
 
     val graph:Graph[(String,String),Int]=Graph(vertexRDD,edgeRDD)
@@ -44,6 +45,8 @@ object GraphXTest {
     return graph
 
   }
+
+
   def main(args:Array[String]): Unit ={
     val sks=SparkSession.builder()
       .master("local")
@@ -52,6 +55,8 @@ object GraphXTest {
 
     val graph=getGrahp(sks)
 
-//    graph.vertices.collect().foreach(println)
+    //graph.vertices.collect().foreach(println)
+
   }
+
 }
