@@ -448,6 +448,30 @@ object RDDExample {
     //    saveAsSequenceFile(path:String):将最终的结果数据以sequence的格式保存到指定的HDFS目录中
   }
 
+  def RDDT_CheckPoint(sc:SparkContext): Unit ={
+//    rdd.toDebugString  查看rdd debug信息
+//    sc.setCheckpointDir("hdfs://lijie:9000/checkpoint0727")
+//    val rdd = sc.parallelize(1 to 10000)
+//    rdd.cache()
+//    rdd.checkpoint()
+//    rdd.collect
+
+  }
+
+  def RDD_Basic(sc:SparkContext): Unit ={
+
+    val rdd = sc.parallelize(1 to 10000)
+    rdd.partitions.size  //查看分区个数
+
+
+    rdd.dependencies.foreach(dep=>{
+      println("dependency type:"+dep.getClass)
+      println("dependency RDD:"+dep.rdd)
+      println("dependency partitions:"+dep.rdd.partitions)
+      println("dependency partitions size:"+dep.rdd.partitions.length)
+    })
+
+  }
 
   def main(args:Array[String]): Unit ={
     val sc=SparkSession.builder()
@@ -455,6 +479,13 @@ object RDDExample {
       .appName("RDDTest")
       .getOrCreate()
       .sparkContext
+
+    /**
+    *
+    * RDD基本属性
+    */
+
+//    RDD_Basic(sc)
 
       /**
       * RDD基本转换
@@ -470,6 +501,7 @@ object RDDExample {
 //    RDDT_Coalesce(sc)
 //    RDDT_Glom(sc)
 //    RDDT_RandomSplit(sc)
+//    RDDT_CheckPoint(sc)
 
     /**
       * 键-值RDD转换
